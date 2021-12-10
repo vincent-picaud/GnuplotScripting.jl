@@ -1,0 +1,7 @@
+name = "GnuPlotScripting"
+uuid = "ad15494f-f1d0-47f4-bf90-1c31da72e94c"
+authors = ["vincent-picaud <picaud.vincent@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
