@@ -15,7 +15,12 @@ const RegisteredData_UUID = typeof(hash(1))
 # Gnuplot exe
 # TODO: windows!
 #
-const gnuplot_exe = "gnuplot"
+@static if Sys.islinux()
+    const gnuplot_exe = "gnuplot"
+else
+    const gnuplot_exe = "gnuplot.exe"
+end
+
 
 # convert data id to gnuplot id
 #
