@@ -3,6 +3,7 @@ export register_data
 export free_form
 export plot, replot
 export set_title
+export add_vertical_line
 export write_script
 
 using DelimitedFiles
@@ -15,22 +16,16 @@ const RegisteredData_UUID = typeof(hash(1))
 # Gnuplot exe
 # TODO: windows!
 #
-@static if Sys.islinux()
-    const gnuplot_exe = "gnuplot"
-else
+@static if Sys.iswindows()
     const gnuplot_exe = "gnuplot.exe"
+else
+    const gnuplot_exe = "gnuplot"
 end
 
 
 # convert data id to gnuplot id
 #
 to_gnuplot_uuid(uuid::RegisteredData_UUID) = "\$G"*string(uuid)
-
-# TODO: add this at construction tiem and modify append
-# io = open((@cmd "gnuplot"),write=true)
-# write_script(io,gp)
-# isreadable(io)
-# close(io)
 
 mutable struct GnuPlotScript
     _registered_data::Dict{RegisteredData_UUID,Any}
@@ -157,18 +152,23 @@ end
 #     register_data(gp,hcat(data.X,data.Y),copy_data=copy_data)
 # end
 
-# One must also detect first plot when using free_form
+# Detect first plot when using free_form
 #
-function free_form_plot_p(gp_line::AbstractString)
+function _contains_plot_p(gp_line::AbstractString)
     space = "^([ \t]*)"
     r = "$(space)splot |$(space)plot "
     r = Regex(r)
 
-    match(r,gp_line) === nothing
+    match(r,gp_line) !== nothing
 end
 
 
 function free_form(gp::GnuPlotScript,gp_line::AbstractString)
+    # Detect plot instruction
+    if _contains_plot_p(gp_line)
+        gp._any_plot = true 
+    end
+    # 
     _append_to_script_newline(gp,gp_line)
 end
 
@@ -182,11 +182,12 @@ function set_title(gp::GnuPlotScript,title::AbstractString;
     _append_to_script_newline(gp,command)
 end
 
-function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString; replot::Bool)
+function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
+               # true: plot triggered by gnuplot "plot"
+               reset_plot::Bool)
     @assert is_registered(gp,uuid)
 
-    # For replotif the plot is not reset, we must check if there is any previous
-    # plot to chose between plot or replot
+    # Detect replot
     #
     replot = false
     if reset_plot
@@ -215,7 +216,18 @@ function plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractStri
     _plot(gp,uuid,plot_arg,reset_plot=true)
 end
 
-function replot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString)
+# Like gnuplot "replot", with the difference that we automatically
+# switch to "plot" when there is no initial plot.
+#
+# Note that we can force "replot" thanks to "force_replot"
+#
+function replot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
+                force_replot::Bool=false)
+
+    if force_replot
+        gp._any_plot = true
+    end
+    
     _plot(gp,uuid,plot_arg,reset_plot=false)
 end
 
