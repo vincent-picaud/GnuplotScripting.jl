@@ -116,17 +116,23 @@ function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_
 end
 
 function _append_to_script(gp::GnuPlotScript,line::AbstractString)
+    # Append to script
+    #
     gp._script *= line 
 
+    # If direct plot is active
+    # also pipe the line
+    #
     if gp._direct_plot_io != nothing
-        if iswritable(gp._direct_plot_io)
+        try
             write(gp._direct_plot_io,line)
-        else
+        catch
             @warn "Broken pipe"
             close(gp._direct_plot_io)
             gp._direct_plot_io=nothing
         end
-    end 
+    end
+    
     gp
 end
 
