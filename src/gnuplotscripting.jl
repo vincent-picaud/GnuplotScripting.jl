@@ -151,6 +151,17 @@ end
 #     register_data(gp,hcat(data.X,data.Y),copy_data=copy_data)
 # end
 
+# One must also detect first plot when using free_form
+#
+function free_form_plot_p(gp_line::AbstractString)
+    space = "^([ \t]*)"
+    r = "$(space)splot |$(space)plot "
+    r = Regex(r)
+
+    match(r,gp_line) === nothing
+end
+
+
 function free_form(gp::GnuPlotScript,gp_line::AbstractString)
     _append_to_script_newline(gp,gp_line)
 end
