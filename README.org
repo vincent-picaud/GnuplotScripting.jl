@@ -1,5 +1,6 @@
 #+title: Create gnuplot scripts
-#+property: header-args:julia :session *gnuplotscripting* :results output
+
+This is a work in progress. You should expect API changes... 
 
 * Table of contents                                            :TOC:noexport:
 - [[#introduction][Introduction]]
@@ -8,21 +9,21 @@
 
 * Introduction
 
-The aim of this small Julia package is to easily create GnuPlot scripts.
-
+The aim of this small package is to easily use gnuplot from
+Julia. You can use this package for:
+- gnuplot direct plotting from Julia
+- creating and saving gnuplot scripts
+- exporting gnuplot figures 
 
 * Getting started
 
 ** First plot
 
-# io = open(@cmd "gnuplot",write=true)
+By default =GnuPlotScript()= opens a pipe and allows interactive
+plotting. On my computer this script 
 
-# io = open(@cmd "gnuplot",write=true) do io
-# write_script(io,gp); return io
-# end
-
-#+begin_src julia :exports code
-  using GnuPlotScripting          # 
+#+begin_src julia :exports code :epilogue "export_png(gp, \"./figures/trig.png\")"
+  using GnuPlotScripting          
 
   gp = GnuPlotScript()
 
@@ -33,63 +34,46 @@ The aim of this small Julia package is to easily create GnuPlot scripts.
   id=register_data(gp,hcat(X,Ys,Yc))
   replot(gp,id,"u 1:3 w l t 'cos'")
   replot(gp,id,"u 1:2 w l t 'sin'")
+#+end_src
 
+takes about 0.7 seconds to render the plot. If you do not want to use
+direct drawing, you can initialize =gp= with:
+
+#+begin_src julia :exports code :eval never
+   gp = GnuPlotScript(direct_plot = false)
+#+end_src
+
+
+- Remark: :: contrary to gnuplot you can use =replot= even for the first
+  plot. The advantage is that you can chain plots without worrying
+  about the first plot. To erase old plots and start a new one you can
+  still use =plot=.
+
+You can export the figure as follows:
+
+#+begin_src julia :exports code :eval never
+  export_png(gp, "./figures/trig.png")
+#+end_src
+
+[[file:figures/trig.png][file:./figures/trig.png]]
+
+or create a gnuplot script as follows:
+
+#+begin_src julia :exports code :eval never
   write_script("./figures/trig.gp",gp)
 #+end_src
 
-#+RESULTS:
-#+begin_example
-[ Info: Precompiling GnuPlotScripting [ad15494f-f1d0-47f4-bf90-1c31da72e94c]
+To "replay" the saved script, simply launch gnuplot from a shell
+terminal:
 
-GnuPlotScript(Dict{UInt64, Any}(), "", false)
+#+begin_src sh :eval never
+  gnuplot ./figures/trig.gp 
+#+end_src
 
+To prevent gnuplot from closing immediately after the script is ended,
+you can add a final =-= to the gnuplot command.
 
-
-
-
-0x1e69842c1db5c04f
-GnuPlotScript(Dict{UInt64, Any}(0x1e69842c1db5c04f => [-3.141592653589793 -1.2246467991473532e-16 -1.0; -3.041592653589793 -0.09983341664682836 -0.9950041652780257; … ; 2.9584073464102074 0.1821625042720949 -0.9832684384425847; 3.058407346410207 0.08308940281749629 -0.9965420970232175]), "plot \$G2191428018704334927 u 1:3 w l t 'cos'\n", true)
-GnuPlotScript(Dict{UInt64, Any}(0x1e69842c1db5c04f => [-3.141592653589793 -1.2246467991473532e-16 -1.0; -3.041592653589793 -0.09983341664682836 -0.9950041652780257; … ; 2.9584073464102074 0.1821625042720949 -0.9832684384425847; 3.058407346410207 0.08308940281749629 -0.9965420970232175]), "plot \$G2191428018704334927 u 1:3 w l t 'cos'\nreplot \$G2191428018704334927 u 1:2 w l t 'sin'\n", true)
-
-#+end_example
-
-
-One can notice that contrary to gnuplot you can use =replot= even for
-the first plot. To erase old plots and start a new one you can still
-use =plot=.
-
-You can show the plot from a shell terminal. Do not forget the last =-=
-at the end. 
 #+begin_src sh :eval never
   gnuplot ./figures/trig.gp -
 #+end_src
 
-If you want to save a figure, you can do:
-#+begin_src julia :exports code
-  export_png(gp,"trig.png")
-  write_script("./figures/trig.gp",gp)
-#+end_src
-
-#+RESULTS:
-: GnuPlotScript(Dict{UInt64, Any}(0x1e69842c1db5c04f => [-3.141592653589793 -1.2246467991473532e-16 -1.0; -3.041592653589793 -0.09983341664682836 -0.9950041652780257; … ; 2.9584073464102074 0.1821625042720949 -0.9832684384425847; 3.058407346410207 0.08308940281749629 -0.9965420970232175]), "plot \$G2191428018704334927 u 1:3 w l t 'cos'\nreplot \$G2191428018704334927 u 1:2 w l t 'sin'\nset terminal push\nset terminal png\nset output\nreplot\nset terminal pop\n", true)
-
-
-
-#+begin_src gnuplot :exports results :results file :file ./figures/trig.png
-  load "./figures/trig.gp"
-  replot
-#+end_src
-
-#+RESULTS:
-[[file:./figures/trig.png]]
-
-
-
-
-
-#+begin_src gnuplot :exports results :results file :file ./figures/trig.png
-  plot sin(x)
-#+end_src
-
-#+RESULTS:
-[[file:./figures/trig.png]]
