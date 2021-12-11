@@ -67,19 +67,54 @@ function is_registered(gp::GnuPlotScript,uuid::RegisteredData_UUID)
     haskey(gp._registered_data,uuid)
 end
 
+# write data
+# ID << EOD
+# data
+# END
+function _write_data(io::IO, uuid::RegisteredData_UUID, data::AbstractVecOrMat)
+    println(io,"$(to_gnuplot_uuid(uuid)) << EOD")
+    writedlm(io,data)
+    println(io,"EOD")
+end
+
+function _write_data(io::IO,gp::GnuPlotScript)
+    for (k,d) in gp._registered_data
+        _write_data(io,k,d)
+    end 
+end
+
+function write_script(io::IO,gp::GnuPlotScript)
+    _write_data(io,gp)
+    print(io,gp._script)
+end
+
+# ================================================================
+
 # private methods to write data:
 # -> use them systematically. Reason contains the extra logic used for direct plotting
 #
 function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_UUID
     # already registered
     uuid = hash(data)
-    
+
+    # no, register it
     if !is_registered(gp,uuid)
         gp._registered_data[uuid]=data
     end
 
+    if gp._direct_plot_io != nothing
+        if iswritable(gp._direct_plot_io)
+            _write_data(gp._direct_plot_io,uuid,data)
+        else
+            @warn "Broken pipe"
+            close(gp._direct_plot_io)
+            gp._direct_plot_io=nothing
+        end
+    end
+    
     uuid
 end
+
 function _append_to_script(gp::GnuPlotScript,line::AbstractString)
     gp._script *= line 
 
@@ -130,10 +165,10 @@ function set_title(gp::GnuPlotScript,title::AbstractString;
     _append_to_script_newline(gp,command)
 end
 
-function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString; reset_plot::Bool)
+function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString; replot::Bool)
     @assert is_registered(gp,uuid)
 
-    # if the plot is not reset, we must check if there is any previous
+    # For replotif the plot is not reset, we must check if there is any previous
     # plot to chose between plot or replot
     #
     replot = false
@@ -155,6 +190,8 @@ function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractStr
     command *= "plot $(to_gnuplot_uuid(uuid)) " * plot_arg
 
     _append_to_script_newline(gp,command)
+
+    gp._any_plot = true
 end
 
 function plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString)
@@ -179,23 +216,10 @@ end
 
 # ================
 
-function write_data(io::IO,gp::GnuPlotScript)
-    for (k,d) in gp._registered_data
-        println(io,"$(to_gnuplot_uuid(k)) << EOD")
-        writedlm(io,d)
-        println(io,"EOD")
-    end 
-end
-
-function write_script(io::IO,gp::GnuPlotScript)
-    write_data(io,gp)
-    print(io,gp._script)
-end
-
 function write_script(script_file::AbstractString,gp::GnuPlotScript)
     io = open(script_file, "w");
 
-    write_script(io,gp)
+    _write_script(io,gp)
     
     # add a final replot to be sure that everything is plotted
     # println(io,"replot")
