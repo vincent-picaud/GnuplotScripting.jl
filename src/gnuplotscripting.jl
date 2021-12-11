@@ -78,7 +78,7 @@ function _write_data(io::IO,gp::GnuPlotScript)
     end 
 end
 
-function write_script(io::IO,gp::GnuPlotScript)
+function _write_script(io::IO,gp::GnuPlotScript)
     _write_data(io,gp)
     print(io,gp._script)
 end
@@ -98,9 +98,9 @@ function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_
     end
 
     if gp._direct_plot_io != nothing
-        if iswritable(gp._direct_plot_io)
+        try
             _write_data(gp._direct_plot_io,uuid,data)
-        else
+        catch
             @warn "Broken pipe"
             close(gp._direct_plot_io)
             gp._direct_plot_io=nothing
@@ -113,7 +113,8 @@ end
 function _append_to_script(gp::GnuPlotScript,line::AbstractString)
     # Append to script
     #
-    gp._script *= line 
+    line *= "\n"
+    gp._script *= line
 
     # If direct plot is active
     # also pipe the line
@@ -129,10 +130,6 @@ function _append_to_script(gp::GnuPlotScript,line::AbstractString)
     end
     
     gp
-end
-
-function _append_to_script_newline(gp::GnuPlotScript,line::AbstractString)
-    _append_to_script(gp, line * "\n")
 end
 
 # Register data and return associated data uuid.
@@ -169,7 +166,7 @@ function free_form(gp::GnuPlotScript,gp_line::AbstractString)
         gp._any_plot = true 
     end
     # 
-    _append_to_script_newline(gp,gp_line)
+    _append_to_script(gp,gp_line)
 end
 
 function set_title(gp::GnuPlotScript,title::AbstractString;
@@ -179,7 +176,7 @@ function set_title(gp::GnuPlotScript,title::AbstractString;
         command *= " noenhanced"
     end
 
-    _append_to_script_newline(gp,command)
+    _append_to_script(gp,command)
 end
 
 function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
@@ -207,7 +204,7 @@ function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractStr
     #
     command *= "plot $(to_gnuplot_uuid(uuid)) " * plot_arg
 
-    _append_to_script_newline(gp,command)
+    _append_to_script(gp,command)
 
     gp._any_plot = true
 end
@@ -240,7 +237,7 @@ function add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{Abstr
     end
     command *= "set arrow from $position, graph 0 to $position, graph 1 nohead front\n"
 
-    _append_to_script_newline(gp,command)
+    _append_to_script(gp,command)
 end
 
 # ================
