@@ -32,28 +32,28 @@ mutable struct GnuPlotScript
     _script::String
     _any_plot::Bool
     _direct_plot_io::Union{Nothing,IO}
-end 
 
-function GnuPlotScript(;direct_plot = true)
-    # manage direct plot
-    #
-    io = nothing
-    if direct_plot
-        io = open(Cmd([gnuplot_exe]),write=true)
-        if !iswritable(io)
-            @warn "Cannot start gnuplot executable $gnuplot_exe"
-            close(io)
-            io = nothing
+    function GnuPlotScript(;direct_plot = true)
+        # manage direct plot
+        #
+        io = nothing
+        if direct_plot
+            io = open(Cmd([gnuplot_exe]),write=true)
+            if !iswritable(io)
+                @warn "Cannot start gnuplot executable $gnuplot_exe"
+                close(io)
+                io = nothing
+            end
         end
+        
+        # other default values
+        #
+        registered_data=Dict{RegisteredData_UUID,Any}()
+        script = String("")
+        any_plot = false
+        
+        gp = new(registered_data,script,any_plot,io)
     end
-
-    # other default values
-    #
-    registered_data=Dict{RegisteredData_UUID,Any}()
-    script = String("")
-    any_plot = false
-    
-    GnuPlotScript(registered_data,script,any_plot,io)
 end
 
 # check if data has already been registered
@@ -143,11 +143,6 @@ function register_data(gp::GnuPlotScript,data::AbstractVecOrMat;
     _append_data(gp,data)
 end
 
-
-# function register_data(gp::GnuplotScript,data::Spectrum;
-#                         copy_data::Bool=true)::RegisteredData_UUID
-#     register_data(gp,hcat(data.X,data.Y),copy_data=copy_data)
-# end
 
 # Detect first plot when using free_form
 #
@@ -247,23 +242,5 @@ function write_script(script_file::AbstractString,gp::GnuPlotScript)
 
     _write_script(io,gp)
     
-    # add a final replot to be sure that everything is plotted
-    # println(io,"replot")
- 
     close(io)
 end
-    
-# ****************************************************************
-# DEMO 
-# ****************************************************************
-# gp = GnuPlotScript()
-
-# id_1 = register_data(gp,10*rand(5))
-# id_2 = register_data(gp,10*rand(5,2))
-
-# gp = plot(gp,id_1,"u 1 w l")
-# gp = replot(gp,id_2,"u 1:2 w l")
-# gp = add_vertical_line(gp,5.0,name="toto")
-# gp = add_vertical_line(gp,2.0,name="titititito")
-
-# write("demo.gp",gp)
