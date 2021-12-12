@@ -1,11 +1,21 @@
+#+options: H:3 toc:t num:t \\n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
 #+title: Create gnuplot scripts
 
-This is a work in progress. You should expect API changes... 
+This is a work in progress. You should expect API changes... This
+package assumes some knowledge of [[http://www.gnuplot.info/][http://www.gnuplot.info/]].
 
 * Table of contents                                            :TOC:noexport:
 - [[#introduction][Introduction]]
 - [[#getting-started][Getting started]]
-  - [[#first-plot][First plot]]
+  - [[#instant-plotting-from-julia][Instant plotting from Julia]]
+  - [[#exporting-gnuplot-scripts][Exporting gnuplot scripts]]
+  - [[#exporting-figures][Exporting figures]]
+- [[#general-considerations][General considerations]]
+  - [[#data-registration][Data registration]]
+  - [[#the-role-of-free_form][The role of =free_form()=]]
+- [[#api][API]]
+- [[#gallery][Gallery]]
+- [[#gnuplot-references][Gnuplot references]]
 
 * Introduction
 
@@ -15,12 +25,16 @@ Julia. You can use this package for:
 - creating and saving gnuplot scripts
 - exporting gnuplot figures 
 
+This is a super lightweight solution if you want to quickly visualize
+some data.
+  
 * Getting started
 
-** First plot
+** Instant plotting from Julia
 
-By default =GnuPlotScript()= opens a pipe and allows interactive
-plotting. On my computer this script 
+By default =GnuPlotScript()= opens a pipe and allows plots to be
+immediately rendered in a companion gnuplot window. On my computer
+this script
 
 #+begin_src julia :exports code :epilogue "export_png(gp, \"./figures/trig.png\")"
   using GnuPlotScripting          
@@ -36,28 +50,24 @@ plotting. On my computer this script
   replot(gp,id,"u 1:2 w l t 'sin'")
 #+end_src
 
-takes about 0.7 seconds to render the plot. If you do not want to use
-direct drawing, you can initialize =gp= with:
+takes about 0.7 seconds to render the plot.
 
-#+begin_src julia :exports code :eval never
-   gp = GnuPlotScript(direct_plot = false)
-#+end_src
-
+[[file:figures/trig.png][file:./figures/trig.png]]
 
 - Remark: :: contrary to gnuplot you can use =replot= even for the first
   plot. The advantage is that you can chain plots without worrying
   about the first plot. To erase old plots and start a new one you can
   still use =plot=.
 
-You can export the figure as follows:
+If you do not want to use direct drawing, you can initialize =gp= with:
 
 #+begin_src julia :exports code :eval never
-  export_png(gp, "./figures/trig.png")
+  gp = GnuPlotScript(direct_plot = false)
 #+end_src
 
-[[file:figures/trig.png][file:./figures/trig.png]]
+** Exporting gnuplot scripts
 
-or create a gnuplot script as follows:
+At any time you can export the gnuplot script as follows:
 
 #+begin_src julia :exports code :eval never
   write_script("./figures/trig.gp",gp)
@@ -76,4 +86,94 @@ you can add a final =-= to the gnuplot command.
 #+begin_src sh :eval never
   gnuplot ./figures/trig.gp -
 #+end_src
+
+** Exporting figures
+
+You can export the figure as follows:
+
+#+begin_src julia :exports code :eval never
+  export_png(gp, "./figures/trig.png")
+#+end_src
+
+* General considerations
+
+** Data registration
+
+In order to be saved only once, even when reused, data need be
+registered. This is performed by:
+#+begin_src julia :eval never
+  id_1 = register_data(gp,my_vector)
+  id_2 = register_data(gp,my_matrix)
+#+end_src
+
+You will get an =id= identifying data. These must be used in =plot= like
+functions. Example:
+
+#+begin_src julia
+  using GnuPlotScripting
+
+  X = -2:0.1:2
+  Y = -2:0.1:2
+  M = [exp(-x_i*x_i-y_j*y_j) for x_i=X, y_j=Y]
+
+  gp = GnuPlotScript()
+
+  id = register_data(gp, M)
+
+  free_form(gp,"set autoscale fix")
+  plot(gp,id,"matrix using 1:2:3 with image")
+
+  export_png(gp, "./figures/2D.png")
+#+end_src
+
+#+RESULTS:
+
+
+[[file:figures/2D.png][file:~/GitHub/GnuPlotScripting.jl/figures/2D.png]]
+
+** The role of =free_form()=
+
+Even if I have started to wrap some gnuplot functionalities in a Julia
+context, like
+
+#+begin_src julia :eval never
+  gp = GnuPlotScript()
+  set_title(gp,"Plot_title",enhanced=false)
+#+end_src
+
+I do not want to do that systematically. This would be a lot of
+work and add a gnuplot software version dependence.
+
+The parade, when the functionality is not wrapped, is to directly talk
+to gnuplot using the =free_form()= function.
+
+#+begin_src julia :eval never
+  gp = GnuPlotScript()
+  free_form(gp, "set title \"My_plot_title\" noenhanced")
+#+end_src
+
+* TODO API
+
+For the moment you will have to use Julia =help?=
+
+The currently exported structure and functions are:
+
+- Structures: ::
+  - GnuPlotScript 
+
+- Methods: ::
+  - plot
+  - write_script
+
+
+* TODO Gallery
+
+* Gnuplot references
+
+- [[http://www.gnuplot.info/][GnuPlot]] official page  
+- [[https://www.manning.com/books/gnuplot-in-action-second-edition][GnuPlot in Action]] a very well written book 
+- [[http://www.gnuplotting.org/][www.gnuplotting.org]] a lot of great examples
+- [[http://folk.uio.no/inf3330/scripting/doc/gnuplot/Kawano/index-e.html][GnuPlot not so Frequently Asked Questions]]
+- [[https://en.wikipedia.org/wiki/Gnuplot][Wikipedia]] the free encyclopedia...
+
 
