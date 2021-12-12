@@ -8,10 +8,17 @@ export write_script
 
 using DelimitedFiles
 
-# By now we directly use hash() as data_id. However, this will maybe change in
-# the future, that's why we declare dedicated type.
+# Data identifier
 #
-const RegisteredData_UUID = typeof(hash(1))
+struct RegisteredData_UUID
+    _hash::UInt64
+    RegisteredData_UUID(any) = new(hash(any))
+end
+
+# Show a well formed gnuplot id
+import Base: show
+Base.show(io::IO,uuid::RegisteredData_UUID) = print(io,"\$G"*string(uuid._hash))
+
 
 # Gnuplot exe
 # TODO: windows!
@@ -21,11 +28,6 @@ const RegisteredData_UUID = typeof(hash(1))
 else
     const gnuplot_exe = "gnuplot"
 end
-
-
-# convert data id to gnuplot id
-#
-to_gnuplot_uuid(uuid::RegisteredData_UUID) = "\$G"*string(uuid)
 
 mutable struct GnuPlotScript
     _registered_data::Dict{RegisteredData_UUID,Any}
@@ -67,7 +69,7 @@ end
 # data
 # END
 function _write_data(io::IO, uuid::RegisteredData_UUID, data::AbstractVecOrMat)
-    println(io,"$(to_gnuplot_uuid(uuid)) << EOD")
+    println(io,"$uuid << EOD")
     writedlm(io,data)
     println(io,"EOD")
 end
@@ -90,7 +92,7 @@ end
 #
 function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_UUID
     # already registered
-    uuid = hash(data)
+    uuid = RegisteredData_UUID(data)
 
     # no, register it
     if !is_registered(gp,uuid)
@@ -154,9 +156,20 @@ function _contains_plot_p(gp_line::AbstractString)
     match(r,gp_line) !== nothing
 end
 
-
 function free_form(gp::GnuPlotScript,gp_line::AbstractString)
+    # Detect replot instruction.
+    # If no previous plot, do "replot" => "plot"
+    #
+    r = r"^([ \t]*)(replot) "
+    if match(r,gp_line) !== nothing
+        if gp._any_plot == false
+            gp_line = replace(gp_line,r"^([ \t]*)(replot) "=>s"\g<1>plot ")
+        end
+    end
+    
     # Detect plot instruction
+    # If one is detected, set any_plot = true
+    #
     if _contains_plot_p(gp_line)
         gp._any_plot = true 
     end
@@ -197,7 +210,7 @@ function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractStr
         command *= "re"
     end
     #
-    command *= "plot $(to_gnuplot_uuid(uuid)) " * plot_arg
+    command *= "plot $uuid " * plot_arg
 
     _append_to_script(gp,command)
 
