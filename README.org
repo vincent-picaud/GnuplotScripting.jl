@@ -129,7 +129,7 @@ functions. Example:
 #+RESULTS:
 
 
-[[file:figures/2D.png][file:~/GitHub/GnuPlotScripting.jl/figures/2D.png]]
+[[file:figures/2D.png][file:./figures/2D.png]]
 
 ** The role of =free_form()=
 
