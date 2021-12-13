@@ -1,18 +1,50 @@
 export export_png
 
-function export_png(gp::GnuPlotScript,filename::AbstractString)
-    _append_to_script(gp,"set terminal push")
-    _append_to_script(gp,"set terminal png")
 
+function _nop_yes_no(flag::Union{Nothing,Bool},yes_no::Tuple{AbstractString,AbstractString})
+    if flag !== nothing
+        if flag
+            return first(yes_no)
+        else
+            return last(yes_no)
+        end
+    end
+    ""
+end
+
+function _enhanced(flag::Union{Nothing,Bool})
+    _nop_yes_no(flag,("enhanced","noenhanced"))
+end                             
+
+# ================================================================
+
+
+function export_png(gp::GnuPlotScript,filename::AbstractString;
+                    enhanced::Union{Nothing,Bool}=nothing)
+
+    # add .png ext to filename
+    #
     filename = splitext(filename)
     if length(filename)>1 && filename[2]!=".png"
         @warn "File extension $(filename[2]) replaced by \".png\""
     end
     filename = first(filename)*".png"
 
-    _append_to_script(gp,"set output '$filename'")
-    _append_to_script(gp,"replot")
-    _append_to_script(gp,"set terminal pop")
+    # command
+    #
+    command = ""
+    command *= "set terminal push\n"
+    command *= "set terminal png "
+
+    command *= _enhanced(enhanced) * "\n"
+    
+    command *= "set output '$filename'"
+    command *= "replot\n"
+    command *= "set terminal pop\n"
+
+    # append gnuplot instructions
+    #
+    _append_to_script(gp,"command")
 
     filename
 end
