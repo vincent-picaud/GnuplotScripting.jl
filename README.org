@@ -1,8 +1,8 @@
 #+options: H:3 toc:t num:t \\n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
 #+title: Create gnuplot scripts
 
-This is a work in progress. You should expect API changes... This
-package assumes some knowledge of [[http://www.gnuplot.info/][http://www.gnuplot.info/]].
+This is a work in progress. This package assumes some knowledge of
+[[http://www.gnuplot.info/][http://www.gnuplot.info/]]. 
 
 * Table of contents                                            :TOC:noexport:
 - [[#introduction][Introduction]]
@@ -14,7 +14,6 @@ package assumes some knowledge of [[http://www.gnuplot.info/][http://www.gnuplot
   - [[#data-registration][Data registration]]
   - [[#the-role-of-free_form][The role of =free_form()=]]
 - [[#api][API]]
-- [[#gallery][Gallery]]
 - [[#gnuplot-references][Gnuplot references]]
 
 * Introduction
@@ -108,8 +107,8 @@ registered. This is performed by:
   id_2 = register_data(gp,my_matrix)
 #+end_src
 
-You will get an =id= identifying data. These must be used in =plot= like
-functions. Example:
+You will get an =id= identifying data. This identifier can be then used
+in plot functions:
 
 #+begin_src julia
   using GnuPlotScripting
@@ -140,35 +139,45 @@ context, like
 
 #+begin_src julia :eval never
   gp = GnuPlotScript()
-  set_title(gp,"Plot_title",enhanced=false)
+  set_title(gp,"My_plot_title",enhanced=false)
 #+end_src
 
 I do not want to do that systematically. This would be a lot of
 work and add a gnuplot software version dependence.
 
-The parade, when the functionality is not wrapped, is to directly talk
-to gnuplot using the =free_form()= function.
+That is the reason why, one must generally directly talk to gnuplot using
+the =free_form= function:
 
 #+begin_src julia :eval never
   gp = GnuPlotScript()
   free_form(gp, "set title \"My_plot_title\" noenhanced")
 #+end_src
 
+In the future I will add some "recipes" for useful/recurrent tasks. A
+simple example of such functionality is adding vertical line.
+
+#+begin_src julia 
+  using GnuPlotScripting
+
+  gp = GnuPlotScript()
+
+  add_vertical_line(gp,-5.0,name="left")
+  add_vertical_line(gp,+5.0,name="right")
+
+  free_form(gp,"plot exp(-x*x/25) with line t 'Gaussian'")
+
+  export_png(gp, "./figures/vline.png")
+#+end_src
+
+#+RESULTS:
+
+[[file:figures/vline.png][file:figures/vline.png]]
+
 * TODO API
 
+This is in the "TODO" list.
+
 For the moment you will have to use Julia =help?=
-
-The currently exported structure and functions are:
-
-- Structures: ::
-  - GnuPlotScript 
-
-- Methods: ::
-  - plot
-  - write_script
-
-
-* TODO Gallery
 
 * Gnuplot references
 
