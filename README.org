@@ -1,12 +1,6 @@
 #+options: H:3 toc:t num:t \\n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
 #+title: Create gnuplot scripts
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://vincent-picaud.github.io/GnuPlotScripting.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://vincent-picaud.github.io/GnuPlotScripting.jl/dev)
-[![Build Status](https://github.com/vincent-picaud/GnuPlotScripting.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/vincent-picaud/GnuPlotScripting.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/vincent-picaud/GnuPlotScripting.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/vincent-picaud/GnuPlotScripting.jl)
-
-
 This is a work in progress. This package assumes some knowledge of
 [[http://www.gnuplot.info/][http://www.gnuplot.info/]]. 
 
