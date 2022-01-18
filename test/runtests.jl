@@ -1,8 +1,6 @@
-# [test/runtests.jl]
 using GnuPlotScripting
 using Test
 
-# Test scripts
-@testset "Foo test" begin
-    @test true
+@testset "GnuPlotScripting.jl" begin
+    # Write your tests here.
 end
