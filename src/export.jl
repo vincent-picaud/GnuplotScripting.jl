@@ -34,17 +34,17 @@ function export_png(gp::GnuPlotScript,filename::AbstractString;
     #
     command = ""
     command *= "set terminal push\n"
-    command *= "set terminal png "
+    command *= "set terminal png\n"
 
     command *= _enhanced(enhanced) * "\n"
     
-    command *= "set output '$filename'"
+    command *= "set output '$filename'\n"
     command *= "replot\n"
     command *= "set terminal pop\n"
 
     # append gnuplot instructions
     #
-    _append_to_script(gp,"command")
+    _append_to_script(gp,command)
 
     filename
 end
