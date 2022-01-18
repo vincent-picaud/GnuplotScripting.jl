@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · GnuPlotScripting.jl</title><script data-outdated-warner src="assets/warner.js"></script><link rel="canonical" href="https://vincent-picaud.github.io/GnuPlotScripting.jl/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><script src="../copy.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>GnuPlotScripting.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/vincent-picaud/GnuPlotScripting.jl/blob/master/docs/src/index.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="GnuPlotScripting"><a class="docs-heading-anchor" href="#GnuPlotScripting">GnuPlotScripting</a><a id="GnuPlotScripting-1"></a><a class="docs-heading-anchor-permalink" href="#GnuPlotScripting" title="Permalink"></a></h1><p>Documentation for <a href="https://github.com/vincent-picaud/GnuPlotScripting.jl">GnuPlotScripting</a>.</p><p>You first plot, using the usual gnuplot commands:</p><pre><code class="language-julia hljs">using GnuPlotScripting
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · GnuPlotScripting.jl</title><script data-outdated-warner src="assets/warner.js"></script><link rel="canonical" href="https://vincent-picaud.github.io/GnuPlotScripting.jl/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><script src="../copy.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>GnuPlotScripting.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li><li><a class="tocitem" href="getting_started/">Getting started</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/vincent-picaud/GnuPlotScripting.jl/blob/master/docs/src/index.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="The-GnuPlotScripting.jl-package"><a class="docs-heading-anchor" href="#The-GnuPlotScripting.jl-package">The GnuPlotScripting.jl package</a><a id="The-GnuPlotScripting.jl-package-1"></a><a class="docs-heading-anchor-permalink" href="#The-GnuPlotScripting.jl-package" title="Permalink"></a></h1><p>The aim of this small package is to easily use gnuplot from Julia. You can use this package for:</p><pre><code class="nohighlight hljs">- gnuplot direct plotting from Julia
+- creating and saving gnuplot scripts
+- exporting gnuplot figures</code></pre><p>This is a super lightweight solution if you want to quickly visualize some data.</p><pre><code class="language-julia hljs">using GnuPlotScripting
 
 gp = GnuPlotScript(direct_plot = false)
+
 
 X=[-pi:0.1:pi;];
 Ys = sin.(X);
@@ -9,28 +12,688 @@ Yc = cos.(X);
 
 id=register_data(gp,hcat(X,Ys,Yc))
 free_form(gp,&quot;replot &#39;$id&#39; u 1:3 w l t &#39;cos&#39;&quot;)
-free_form(gp,&quot;replot &#39;$id&#39; u 1:2 w l t &#39;sin&#39;&quot;)
+free_form(gp,&quot;replot &#39;$id&#39; u 1:2 w l t &#39;sin&#39;&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">G0
+QG
+QD
+QF
+A-270
+A0
+W1
+L-2
+l-2
+M260 230
+V306 230
+M3975 230
+V3929 230
+J2
+QF
+T220 230 -1
+W1
+L-2
+l-2
+M260 483
+V306 483
+M3975 483
+V3929 483
+J2
+T220 483 -0.8
+W1
+L-2
+l-2
+M260 737
+V306 737
+M3975 737
+V3929 737
+J2
+T220 737 -0.6
+W1
+L-2
+l-2
+M260 990
+V306 990
+M3975 990
+V3929 990
+J2
+T220 990 -0.4
+W1
+L-2
+l-2
+M260 1244
+V306 1244
+M3975 1244
+V3929 1244
+J2
+T220 1244 -0.2
+W1
+L-2
+l-2
+M260 1497
+V306 1497
+M3975 1497
+V3929 1497
+J2
+T220 1497  0
+W1
+L-2
+l-2
+M260 1750
+V306 1750
+M3975 1750
+V3929 1750
+J2
+T220 1750  0.2
+W1
+L-2
+l-2
+M260 2004
+V306 2004
+M3975 2004
+V3929 2004
+J2
+T220 2004  0.4
+W1
+L-2
+l-2
+M260 2257
+V306 2257
+M3975 2257
+V3929 2257
+J2
+T220 2257  0.6
+W1
+L-2
+l-2
+M260 2511
+V306 2511
+M3975 2511
+V3929 2511
+J2
+T220 2511  0.8
+W1
+L-2
+l-2
+M260 2764
+V306 2764
+M3975 2764
+V3929 2764
+J2
+T220 2764  1
+W1
+L-2
+l-2
+A0
+M260 230
+V260 276
+M260 2764
+V260 2718
+J1
+T260 115 -4
+W1
+L-2
+l-2
+M724 230
+V724 276
+M724 2764
+V724 2718
+J1
+T724 115 -3
+W1
+L-2
+l-2
+M1189 230
+V1189 276
+M1189 2764
+V1189 2718
+J1
+T1189 115 -2
+W1
+L-2
+l-2
+M1653 230
+V1653 276
+M1653 2764
+V1653 2718
+J1
+T1653 115 -1
+W1
+L-2
+l-2
+M2118 230
+V2118 276
+M2118 2764
+V2118 2718
+J1
+T2118 115  0
+W1
+L-2
+l-2
+M2582 230
+V2582 276
+M2582 2764
+V2582 2718
+J1
+T2582 115  1
+W1
+L-2
+l-2
+M3046 230
+V3046 276
+M3046 2764
+V3046 2718
+J1
+T3046 115  2
+W1
+L-2
+l-2
+M3511 230
+V3511 276
+M3511 2764
+V3511 2718
+J1
+T3511 115  3
+W1
+L-2
+l-2
+M3975 230
+V3975 276
+M3975 2764
+V3975 2718
+J1
+T3975 115  4
+W1
+L-2
+l-2
+A0
+W1
+L-2
+l-2
+M260 2764
+V260 230
+V3975 230
+V3975 2764
+V260 2764
+P-2 4096 4096
+W1
+L-2
+l-2
+W1
+L-2
+g9400d3
+l-2
+J2
+J2
+T3649 2660 cos
+W1
+L-2
+g9400d3
+M3689 2660
+V3895 2660
+M659 230
+V705 236
+V751 255
+V798 287
+V844 330
+V891 385
+V937 451
+V984 528
+V1030 614
+V1077 709
+V1123 812
+V1169 922
+V1216 1038
+V1262 1158
+V1309 1282
+V1355 1407
+V1402 1534
+V1448 1660
+V1494 1785
+V1541 1907
+V1587 2024
+V1634 2137
+V1680 2243
+V1727 2341
+V1773 2431
+V1820 2512
+V1866 2583
+V1912 2642
+V1959 2691
+V2005 2727
+V2052 2751
+V2098 2763
+V2145 2762
+V2191 2748
+V2237 2722
+V2284 2683
+V2330 2633
+V2377 2572
+V2423 2499
+V2470 2417
+V2516 2325
+V2563 2225
+V2609 2118
+V2655 2005
+V2702 1886
+V2748 1764
+V2795 1639
+V2841 1513
+V2888 1386
+V2934 1261
+V2980 1138
+V3027 1018
+V3073 903
+V3120 795
+V3166 693
+V3213 599
+V3259 514
+V3306 439
+V3352 375
+V3398 322
+V3445 280
+V3491 251
+V3538 234
+W2
+L-2
+l-2
+W1
+L-2
+l-2
+M260 2764
+V260 230
+V3975 230
+V3975 2764
+V260 2764
+P-2 4096 4096
+W1
+L-2
+l-2
+S -2 1
+S -1 143
+S  2               -4            260          464.375                0
+S  1               -1            230             1267                0
+S  6         -3.14159            260          599.194                0
+S  5               -1            230          1267.55                0
+E
+G0
+Qg
+QD
+QF
+A-270
+A0
+W1
+L-2
+l-2
+M260 230
+V306 230
+M3975 230
+V3929 230
+J2
+QF
+T220 230 -1
+W1
+L-2
+l-2
+M260 483
+V306 483
+M3975 483
+V3929 483
+J2
+T220 483 -0.8
+W1
+L-2
+l-2
+M260 737
+V306 737
+M3975 737
+V3929 737
+J2
+T220 737 -0.6
+W1
+L-2
+l-2
+M260 990
+V306 990
+M3975 990
+V3929 990
+J2
+T220 990 -0.4
+W1
+L-2
+l-2
+M260 1244
+V306 1244
+M3975 1244
+V3929 1244
+J2
+T220 1244 -0.2
+W1
+L-2
+l-2
+M260 1497
+V306 1497
+M3975 1497
+V3929 1497
+J2
+T220 1497  0
+W1
+L-2
+l-2
+M260 1750
+V306 1750
+M3975 1750
+V3929 1750
+J2
+T220 1750  0.2
+W1
+L-2
+l-2
+M260 2004
+V306 2004
+M3975 2004
+V3929 2004
+J2
+T220 2004  0.4
+W1
+L-2
+l-2
+M260 2257
+V306 2257
+M3975 2257
+V3929 2257
+J2
+T220 2257  0.6
+W1
+L-2
+l-2
+M260 2511
+V306 2511
+M3975 2511
+V3929 2511
+J2
+T220 2511  0.8
+W1
+L-2
+l-2
+M260 2764
+V306 2764
+M3975 2764
+V3929 2764
+J2
+T220 2764  1
+W1
+L-2
+l-2
+A0
+M260 230
+V260 276
+M260 2764
+V260 2718
+J1
+T260 115 -4
+W1
+L-2
+l-2
+M724 230
+V724 276
+M724 2764
+V724 2718
+J1
+T724 115 -3
+W1
+L-2
+l-2
+M1189 230
+V1189 276
+M1189 2764
+V1189 2718
+J1
+T1189 115 -2
+W1
+L-2
+l-2
+M1653 230
+V1653 276
+M1653 2764
+V1653 2718
+J1
+T1653 115 -1
+W1
+L-2
+l-2
+M2118 230
+V2118 276
+M2118 2764
+V2118 2718
+J1
+T2118 115  0
+W1
+L-2
+l-2
+M2582 230
+V2582 276
+M2582 2764
+V2582 2718
+J1
+T2582 115  1
+W1
+L-2
+l-2
+M3046 230
+V3046 276
+M3046 2764
+V3046 2718
+J1
+T3046 115  2
+W1
+L-2
+l-2
+M3511 230
+V3511 276
+M3511 2764
+V3511 2718
+J1
+T3511 115  3
+W1
+L-2
+l-2
+M3975 230
+V3975 276
+M3975 2764
+V3975 2718
+J1
+T3975 115  4
+W1
+L-2
+l-2
+A0
+W1
+L-2
+l-2
+M260 2764
+V260 230
+V3975 230
+V3975 2764
+V260 2764
+P-2 4096 4096
+W1
+L-2
+l-2
+W1
+L-2
+g9400d3
+l-2
+J2
+J2
+T3649 2660 cos
+W1
+L-2
+g9400d3
+M3689 2660
+V3895 2660
+M659 230
+V705 236
+V751 255
+V798 287
+V844 330
+V891 385
+V937 451
+V984 528
+V1030 614
+V1077 709
+V1123 812
+V1169 922
+V1216 1038
+V1262 1158
+V1309 1282
+V1355 1407
+V1402 1534
+V1448 1660
+V1494 1785
+V1541 1907
+V1587 2024
+V1634 2137
+V1680 2243
+V1727 2341
+V1773 2431
+V1820 2512
+V1866 2583
+V1912 2642
+V1959 2691
+V2005 2727
+V2052 2751
+V2098 2763
+V2145 2762
+V2191 2748
+V2237 2722
+V2284 2683
+V2330 2633
+V2377 2572
+V2423 2499
+V2470 2417
+V2516 2325
+V2563 2225
+V2609 2118
+V2655 2005
+V2702 1886
+V2748 1764
+V2795 1639
+V2841 1513
+V2888 1386
+V2934 1261
+V2980 1138
+V3027 1018
+V3073 903
+V3120 795
+V3166 693
+V3213 599
+V3259 514
+V3306 439
+V3352 375
+V3398 322
+V3445 280
+V3491 251
+V3538 234
+W1
+L-2
+g009e73
+l-2
+J2
+J2
+T3649 2545 sin
+W1
+L-2
+g009e73
+M3689 2545
+V3895 2545
+M659 1497
+V705 1371
+V751 1245
+V798 1123
+V844 1004
+V891 890
+V937 782
+V984 681
+V1030 588
+V1077 505
+V1123 431
+V1169 368
+V1216 316
+V1262 276
+V1309 248
+V1355 233
+V1402 231
+V1448 241
+V1494 263
+V1541 298
+V1587 345
+V1634 403
+V1680 473
+V1727 552
+V1773 641
+V1820 739
+V1866 844
+V1912 956
+V1959 1073
+V2005 1194
+V2052 1318
+V2098 1444
+V2145 1571
+V2191 1697
+V2237 1821
+V2284 1941
+V2330 2058
+V2377 2168
+V2423 2272
+V2470 2368
+V2516 2456
+V2563 2534
+V2609 2601
+V2655 2658
+V2702 2703
+V2748 2736
+V2795 2756
+V2841 2764
+V2888 2759
+V2934 2742
+V2980 2712
+V3027 2670
+V3073 2616
+V3120 2551
+V3166 2476
+V3213 2391
+V3259 2297
+V3306 2195
+V3352 2086
+V3398 1971
+V3445 1851
+V3491 1728
+V3538 1602
+W2
+L-2
+l-2
+W1
+L-2
+l-2
+M260 2764
+V260 230
+V3975 230
+V3975 2764
+V260 2764
+P-2 4096 4096
+W1
+L-2
+l-2
+S -2 1
+S -1 143
+S  2               -4            260          464.375                0
+S  1               -1            230             1267                0
+S  6         -3.14159            260          599.194                0
+S  5               -1            230          1267.05                0
+E</code></pre><p><img src="sin.png" alt="image info"/></p><ul><li><a href="#GnuPlotScripting.GnuPlotScript"><code>GnuPlotScripting.GnuPlotScript</code></a></li></ul><article class="docstring"><header><a class="docstring-binding" id="GnuPlotScripting.GnuPlotScript" href="#GnuPlotScripting.GnuPlotScript"><code>GnuPlotScripting.GnuPlotScript</code></a> — <span class="docstring-category">Type</span></header><section><div><pre><code class="language-julia hljs">gp = GnuPlotScript(;direct_plot = true)</code></pre><p>Create a gnuplot script <code>gp</code>. If <code>direct_plot</code> is true, simultaneously plot the registered operations.</p><p><strong>Usage example</strong></p><p>You can perform a simple plot as follows:</p><pre><code class="language-julia hljs">gp = GnuPlotScript(;direct_plot = true)
 
-export_png(gp, &quot;sin.png&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">qt.qpa.xcb: could not connect to display
-qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;&quot; even though it was found.
-This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+X=[-pi:0.1:pi;];
+Ys = sin.(X);
+Yc = cos.(X);
 
-Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
-
-Could not connect to existing gnuplot_qt. Starting a new one.
-qt.qpa.xcb: could not connect to display
-qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;&quot; even though it was found.
-This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
-
-Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
-
-
-Warning: slow font initializationCould not connect to existing gnuplot_qt. Starting a new one.
-qt.qpa.xcb: could not connect to display
-qt.qpa.plugin: Could not load the Qt platform plugin &quot;xcb&quot; in &quot;&quot; even though it was found.
-This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
-
-Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
-
-
-Warning: slow font initialization</code></pre><p><img src="sin.png" alt="image info"/></p><ul></ul></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.12 on <span class="colophon-date" title="Tuesday 18 January 2022 15:09">Tuesday 18 January 2022</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+id = register_data(gp,hcat(X,Ys,Yc))
+free_form(gp,&quot;replot &#39;$id&#39; u 1:3 w l t &#39;cos&#39;&quot;)
+free_form(gp,&quot;replot &#39;$id&#39; u 1:2 w l t &#39;sin&#39;&quot;)</code></pre><p>The plot will be created immediately.</p><p><strong>Also see</strong></p><ul><li><a href="@ref"><code>register_data</code></a> </li><li><a href="@ref"><code>free_form</code></a> </li></ul></div><a class="docs-sourcelink" target="_blank" href="https://github.com/vincent-picaud/GnuPlotScripting.jl/blob/abb777c31a3cf4066f8cbb4fec661a6661bb12ff/src/gnuplotscripting.jl#L32-L61">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="getting_started/">Getting started »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.12 on <span class="colophon-date" title="Tuesday 18 January 2022 16:06">Tuesday 18 January 2022</span>. Using Julia version 1.7.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
