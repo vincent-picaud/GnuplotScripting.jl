@@ -14,12 +14,11 @@ allows to:
 This is a lightweight solution that allows you to quickly visualize
 some data.
 
-```@example session
+```@example 
 using GnuPlotScripting
 
-gp = GnuPlotScript(direct_plot=false)
-free_form(gp,"set terminal png") # hide
-free_form(gp,"set output 'sin.png'") # hide
+gp = GnuPlotScript(;direct_plot=false)
+free_form(gp,"set terminal x11") # hide
 
 X=[-pi:0.1:pi;];
 Ys = sin.(X);
@@ -29,8 +28,10 @@ id=register_data(gp,hcat(X,Ys,Yc))
 free_form(gp,"replot '$id' u 1:3 w l t 'cos'")
 free_form(gp,"replot '$id' u 1:2 w l t 'sin'")
 
-write_script("test.gp", gp) # hide
+export_png(gp, "sin.png") # hide
+write_script("test.gp",gp) # hide
 run(Cmd([GnuPlotScripting.gnuplot_exe, "-c", "test.gp"])) # hide
+nothing # hide
 ```
 
 ![image info](sin.png)
