@@ -53,7 +53,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install gnuplot
-      - run: sudo apt-get install xvfb
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
@@ -64,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
       - run: |
-          xvfb-run julia --project=docs -e '
+          julia --project=docs -e '
             using Documenter: DocMeta, doctest
             using GnuPlotScripting
             DocMeta.setdocmeta!(GnuPlotScripting, :DocTestSetup, :(using GnuPlotScripting); recursive=true)
