@@ -52,7 +52,7 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-      - run: apt-get install gnuplot
+      - run: sudo apt-get install gnuplot
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
