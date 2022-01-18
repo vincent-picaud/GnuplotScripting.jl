@@ -11,6 +11,7 @@ concurrency:
   # Cancel intermediate builds: only if it is a pull request build.
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
 jobs:
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
@@ -51,6 +52,7 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
+      - run: apt-get install gnuplot
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
