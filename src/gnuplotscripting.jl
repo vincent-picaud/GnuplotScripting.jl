@@ -29,6 +29,36 @@ else
     const gnuplot_exe = "gnuplot"
 end
 
+@doc raw"""
+```julia
+gp = GnuPlotScript(;direct_plot = true)
+```
+
+Create a gnuplot script `gp`. If `direct_plot` is true, simultaneously
+plot the registered operations.
+
+# Usage example
+
+You can perform a simple plot as follows:
+
+```julia
+gp = GnuPlotScript(;direct_plot = true)
+
+X=[-pi:0.1:pi;];
+Ys = sin.(X);
+Yc = cos.(X);
+
+id = register_data(gp,hcat(X,Ys,Yc))
+free_form(gp,"replot '$id' u 1:3 w l t 'cos'")
+free_form(gp,"replot '$id' u 1:2 w l t 'sin'")
+```
+
+The plot will be created immediately.
+
+# Also see
+- [`register_data`](@ref) 
+- [`free_form`](@ref) 
+"""
 mutable struct GnuPlotScript
     _registered_data::Dict{RegisteredData_UUID,Any}
     _script::String
@@ -134,8 +164,31 @@ function _append_to_script(gp::GnuPlotScript,line::AbstractString)
     gp
 end
 
-# Register data and return associated data uuid.
-#
+@doc raw"""
+```julia
+register_data(gp::GnuPlotScript,
+              data::AbstractVecOrMat;
+              copy_data::Bool=true) -> id
+```
+
+Register data and return the associated data identifier. Registered
+data is embedded in the plot script file. The returned `id` is used to
+reference registered data.
+
+# Usage example
+
+```julia
+gp = GnuPlotScript()
+
+M = rand(10,3)
+
+id = register_data(gp, M)
+
+free_form(gp,"replot $id u 1:2")
+free_form(gp,"replot $id u 1:3")
+```
+
+"""
 function register_data(gp::GnuPlotScript,data::AbstractVecOrMat;
                        copy_data::Bool=true)::RegisteredData_UUID
     if copy_data
@@ -156,6 +209,27 @@ function _contains_plot_p(gp_line::AbstractString)
     match(r,gp_line) !== nothing
 end
 
+@doc raw"""
+```julia
+free_form(gp::GnuPlotScript,gp_line::AbstractString)
+```
+
+Write gnuplot commands. This command line is directly forwarded to
+Gnuplot. The only difference is that you can use `replot` even for the
+first plot. This is convenient when you chain plots, you do not have
+to worry if the current command is the first plot.
+
+# Usage example 
+
+```julia
+using GnuPlotScripting
+
+gp = GnuPlotScript()
+
+free_form(gp, "replot sin(x) lw 2 t 'a trigonometric function'")
+```
+
+"""
 function free_form(gp::GnuPlotScript,gp_line::AbstractString)
     # Detect replot instruction.
     # If no previous plot, do "replot" => "plot"
@@ -177,6 +251,15 @@ function free_form(gp::GnuPlotScript,gp_line::AbstractString)
     _append_to_script(gp,gp_line)
 end
 
+@doc raw"""
+```julia
+set_title(gp::GnuPlotScript,title::AbstractString;
+                   enhanced::Bool = false)
+```
+
+Define plot title. If `enhanced` is true, some characters are
+processed in a special way. By example `_` subscripts text.
+"""
 function set_title(gp::GnuPlotScript,title::AbstractString;
                    enhanced::Bool = false)
     command = "set title '$title'"
