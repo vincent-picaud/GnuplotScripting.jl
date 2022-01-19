@@ -35,3 +35,16 @@ free_form(gp,"set autoscale fix")
 free_form(gp,"plot '$id' matrix using 1:2:3 with image")
 
 export_png(gp, figfile("2D.png"))
+
+# vlines
+#
+using GnuPlotScripting
+
+gp = GnuPlotScript()
+
+add_vertical_line(gp,-5.0,name="left")
+add_vertical_line(gp,+5.0,name="right")
+
+free_form(gp,"plot exp(-x*x/25) with line t 'Gaussian'")
+
+export_png(gp, figfile("vlines.png"))

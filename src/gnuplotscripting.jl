@@ -300,6 +300,12 @@ function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractStr
     gp._any_plot = true
 end
 
+
+# ****************************************************************
+# Dedicated function / recipes
+# ****************************************************************
+#
+
 function plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString)
     _plot(gp,uuid,plot_arg,reset_plot=true)
 end
@@ -319,8 +325,14 @@ function replot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractSt
     _plot(gp,uuid,plot_arg,reset_plot=false)
 end
 
-# vertical ----------------
+# vertical line ================
 #
+
+"""
+    add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{AbstractString,Nothing})
+
+Add a vertical bar with a label
+"""
 function add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{AbstractString,Nothing})
     command = ""
     if name != Nothing
@@ -331,8 +343,37 @@ function add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{Abstr
     _append_to_script(gp,command)
 end
 
-# ================
+# ****************************************************************
+# Write script
+# ****************************************************************
+#
 
+"""
+    write_script(script_file::AbstractString,gp::GnuPlotScript)
+
+Write script with embedded data for future use.
+
+# Usage
+
+```julia
+gp = GnuPlotScript()
+
+...
+
+write_script("gnuplot_script.gp",gp)
+```
+
+You can replay the script using Gnuplot:
+```sh
+    gnuplot gnuplot_script.gp
+```
+
+If you want to keep the gnuplot session opened, add a final `-`
+
+```sh
+    gnuplot gnuplot_script.gp -
+```
+"""
 function write_script(script_file::AbstractString,gp::GnuPlotScript)
     io = open(script_file, "w");
 

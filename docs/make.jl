@@ -1,3 +1,6 @@
+#
+# CAVEAT: src/all_plots.jl generates all plots and save them into the scr/figures/ dir.
+#
 using GnuPlotScripting
 using Documenter
 
@@ -15,7 +18,9 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-        "Getting started" => "getting_started.md",
+        "New things to learn" => "new_things_to_learn.md",
+        "Beside `free_form()`" => "beside_free_form.md",
+        "API" => "api.md",
     ],
 )
 

@@ -18,7 +18,15 @@ end
 
 # ================================================================
 
+"""
+```julia
+export_png(gp::GnuPlotScript,
+           filename::AbstractString;
+           enhanced::Bool)
+```
 
+Export the current plots as an `PNG` image
+"""
 function export_png(gp::GnuPlotScript,filename::AbstractString;
                     enhanced::Union{Nothing,Bool}=nothing)
 
