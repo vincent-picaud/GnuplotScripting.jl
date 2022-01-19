@@ -13,10 +13,6 @@ to:
 - easily export Gnuplot figures.
 
 ```julia
-    to perform direct rendering of Gnuplot plots from Julia
-    to create and save Gnuplot scripts with embedded data
-    to easily export Gnuplot figures
-
 using GnuPlotScripting
 
 # create a gnuplot script
@@ -46,5 +42,12 @@ export_png("fig.png",gp)
 #
 write_script("gnuplot_script.gp",gp)
 ```
+That's it!
+
+After running the previous code you will get a nearly immediate plot
+of your figure, a `fig.png` image file
 
 ![image](docs/src/figures/trig.png)
+
+and a gnuplot script `gnuplot_script.gp` with embedded data you can
+rerun when you want.
