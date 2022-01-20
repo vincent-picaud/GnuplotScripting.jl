@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = GnuPlotScripting
+CurrentModule = GnuplotScripting
 ```
 
 # Home
@@ -40,11 +40,11 @@ Here are some basic functionalities with an example
 
 
 ```julia
-using GnuPlotScripting
+using GnuplotScripting
 
 # create a gnuplot script
 #
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 # Fake data
 #
@@ -105,10 +105,10 @@ Depth = 3
 
 Some gnuplot extra references:
 
-- [GnuPlot](http://www.gnuplot.info/) official page
-- [GnuPlot in Action](https://www.manning.com/books/gnuplot-in-action-second-edition) a very well written book 
+- [Gnuplot](http://www.Gnuplot.info/) official page
+- [Gnuplot in Action](https://www.manning.com/books/Gnuplot-in-action-second-edition) a very well written book 
 - [www.gnuplotting.org](http://www.gnuplotting.org/) a lot of great examples
-- [GnuPlot not so Frequently Asked Questions](http://folk.uio.no/inf3330/scripting/doc/gnuplot/Kawano/index-e.html) 
+- [Gnuplot not so Frequently Asked Questions](http://folk.uio.no/inf3330/scripting/doc/Gnuplot/Kawano/index-e.html) 
 - [Wikipedia](https://en.wikipedia.org/wiki/Gnuplot) free encyclopedia...
 
 

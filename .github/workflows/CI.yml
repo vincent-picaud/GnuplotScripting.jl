@@ -65,6 +65,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using GnuPlotScripting
-            DocMeta.setdocmeta!(GnuPlotScripting, :DocTestSetup, :(using GnuPlotScripting); recursive=true)
-            doctest(GnuPlotScripting)'
+            using GnuplotScripting
+            DocMeta.setdocmeta!(GnuplotScripting, :DocTestSetup, :(using GnuplotScripting); recursive=true)
+            doctest(GnuplotScripting)'

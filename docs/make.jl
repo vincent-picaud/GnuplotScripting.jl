@@ -1,19 +1,19 @@
 #
 # CAVEAT: src/all_plots.jl generates all plots and save them into the scr/figures/ dir.
 #
-using GnuPlotScripting
+using GnuplotScripting
 using Documenter
 
-DocMeta.setdocmeta!(GnuPlotScripting, :DocTestSetup, :(using GnuPlotScripting); recursive=true)
+DocMeta.setdocmeta!(GnuplotScripting, :DocTestSetup, :(using GnuplotScripting); recursive=true)
 
 makedocs(;
-    modules=[GnuPlotScripting],
+    modules=[GnuplotScripting],
     authors="Vincent Picaud",
-    repo="https://github.com/vincent-picaud/GnuPlotScripting.jl/blob/{commit}{path}#{line}",
-    sitename="GnuPlotScripting.jl",
+    repo="https://github.com/vincent-picaud/GnuplotScripting.jl/blob/{commit}{path}#{line}",
+    sitename="GnuplotScripting.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://vincent-picaud.github.io/GnuPlotScripting.jl",
+        canonical="https://vincent-picaud.github.io/GnuplotScripting.jl",
         assets=String[],
     ),
     pages=[
@@ -25,6 +25,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/vincent-picaud/GnuPlotScripting.jl",
+    repo="github.com/vincent-picaud/GnuplotScripting.jl",
     devbranch="main",
 )

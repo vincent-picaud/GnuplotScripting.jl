@@ -1,4 +1,4 @@
-export GnuPlotScript
+export GnuplotScript
 export register_data
 export free_form
 export plot, replot
@@ -31,7 +31,7 @@ end
 
 @doc raw"""
 ```julia
-gp = GnuPlotScript(;direct_plot = true)
+gp = GnuplotScript(;direct_plot = true)
 ```
 
 Create a gnuplot script `gp`. If `direct_plot` is true, simultaneously
@@ -42,7 +42,7 @@ plot the registered operations.
 You can perform a simple plot as follows:
 
 ```julia
-gp = GnuPlotScript(;direct_plot = true)
+gp = GnuplotScript(;direct_plot = true)
 
 X=[-pi:0.1:pi;];
 Ys = sin.(X);
@@ -59,13 +59,13 @@ The plot will be created immediately.
 - [`register_data`](@ref) 
 - [`free_form`](@ref) 
 """
-mutable struct GnuPlotScript
+mutable struct GnuplotScript
     _registered_data::Dict{RegisteredData_UUID,Any}
     _script::String
     _any_plot::Bool
     _direct_plot_io::Union{Nothing,IO}
 
-    function GnuPlotScript(;direct_plot = true)
+    function GnuplotScript(;direct_plot = true)
         # manage direct plot
         #
         io = nothing
@@ -90,7 +90,7 @@ end
 
 # check if data has already been registered
 #
-function is_registered(gp::GnuPlotScript,uuid::RegisteredData_UUID)
+function is_registered(gp::GnuplotScript,uuid::RegisteredData_UUID)
     haskey(gp._registered_data,uuid)
 end
 
@@ -104,13 +104,13 @@ function _write_data(io::IO, uuid::RegisteredData_UUID, data::AbstractVecOrMat)
     println(io,"EOD")
 end
 
-function _write_data(io::IO,gp::GnuPlotScript)
+function _write_data(io::IO,gp::GnuplotScript)
     for (k,d) in gp._registered_data
         _write_data(io,k,d)
     end 
 end
 
-function _write_script(io::IO,gp::GnuPlotScript)
+function _write_script(io::IO,gp::GnuplotScript)
     _write_data(io,gp)
     print(io,gp._script)
 end
@@ -120,7 +120,7 @@ end
 # private methods to write data:
 # -> use them systematically. Reason contains the extra logic used for direct plotting
 #
-function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_UUID
+function _append_data(gp::GnuplotScript,data::AbstractVecOrMat)::RegisteredData_UUID
     # already registered
     uuid = RegisteredData_UUID(data)
 
@@ -142,7 +142,7 @@ function _append_data(gp::GnuPlotScript,data::AbstractVecOrMat)::RegisteredData_
     uuid
 end
 
-function _append_to_script(gp::GnuPlotScript,line::AbstractString)
+function _append_to_script(gp::GnuplotScript,line::AbstractString)
     # Append to script
     #
     line *= "\n"
@@ -166,7 +166,7 @@ end
 
 @doc raw"""
 ```julia
-register_data(gp::GnuPlotScript,
+register_data(gp::GnuplotScript,
               data::AbstractVecOrMat;
               copy_data::Bool=true) -> id
 ```
@@ -178,7 +178,7 @@ reference registered data.
 # Usage example
 
 ```julia
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 M = rand(10,3)
 
@@ -189,7 +189,7 @@ free_form(gp,"replot $id u 1:3")
 ```
 
 """
-function register_data(gp::GnuPlotScript,data::AbstractVecOrMat;
+function register_data(gp::GnuplotScript,data::AbstractVecOrMat;
                        copy_data::Bool=true)::RegisteredData_UUID
     if copy_data
         data = deepcopy(data)
@@ -211,7 +211,7 @@ end
 
 @doc raw"""
 ```julia
-free_form(gp::GnuPlotScript,gp_line::AbstractString)
+free_form(gp::GnuplotScript,gp_line::AbstractString)
 ```
 
 Write gnuplot commands. This command line is directly forwarded to
@@ -222,15 +222,15 @@ to worry if the current command is the first plot.
 # Usage example 
 
 ```julia
-using GnuPlotScripting
+using GnuplotScripting
 
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 free_form(gp, "replot sin(x) lw 2 t 'a trigonometric function'")
 ```
 
 """
-function free_form(gp::GnuPlotScript,gp_line::AbstractString)
+function free_form(gp::GnuplotScript,gp_line::AbstractString)
     # Detect replot instruction.
     # If no previous plot, do "replot" => "plot"
     #
@@ -253,14 +253,14 @@ end
 
 @doc raw"""
 ```julia
-set_title(gp::GnuPlotScript,title::AbstractString;
+set_title(gp::GnuplotScript,title::AbstractString;
                    enhanced::Bool = false)
 ```
 
 Define plot title. If `enhanced` is true, some characters are
 processed in a special way. By example `_` subscripts text.
 """
-function set_title(gp::GnuPlotScript,title::AbstractString;
+function set_title(gp::GnuplotScript,title::AbstractString;
                    enhanced::Bool = false)
     command = "set title '$title'"
     if enhanced==false
@@ -270,7 +270,7 @@ function set_title(gp::GnuPlotScript,title::AbstractString;
     _append_to_script(gp,command)
 end
 
-function _plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
+function _plot(gp::GnuplotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
                # true: plot triggered by gnuplot "plot"
                reset_plot::Bool)
     @assert is_registered(gp,uuid)
@@ -306,7 +306,7 @@ end
 # ****************************************************************
 #
 
-function plot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString)
+function plot(gp::GnuplotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString)
     _plot(gp,uuid,plot_arg,reset_plot=true)
 end
 
@@ -315,7 +315,7 @@ end
 #
 # Note that we can force "replot" thanks to "force_replot"
 #
-function replot(gp::GnuPlotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
+function replot(gp::GnuplotScript,uuid::RegisteredData_UUID,plot_arg::AbstractString;
                 force_replot::Bool=false)
 
     if force_replot
@@ -329,11 +329,11 @@ end
 #
 
 """
-    add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{AbstractString,Nothing})
+    add_vertical_line(gp::GnuplotScript,position::Float64;name::Union{AbstractString,Nothing})
 
 Add a vertical bar with a label
 """
-function add_vertical_line(gp::GnuPlotScript,position::Float64;name::Union{AbstractString,Nothing})
+function add_vertical_line(gp::GnuplotScript,position::Float64;name::Union{AbstractString,Nothing})
     command = ""
     if name != Nothing
         command  *= "set label at $position, 0.0 '$name' rotate by 90 front left offset -1,1,0 tc ls 1\n"
@@ -349,14 +349,14 @@ end
 #
 
 """
-    write_script(script_file::AbstractString,gp::GnuPlotScript)
+    write_script(script_file::AbstractString,gp::GnuplotScript)
 
 Write script with embedded data for future use.
 
 # Usage
 
 ```julia
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 ...
 
@@ -374,7 +374,7 @@ If you want to keep the gnuplot session opened, add a final `-`
     gnuplot gnuplot_script.gp -
 ```
 """
-function write_script(script_file::AbstractString,gp::GnuPlotScript)
+function write_script(script_file::AbstractString,gp::GnuplotScript)
     io = open(script_file, "w");
 
     _write_script(io,gp)

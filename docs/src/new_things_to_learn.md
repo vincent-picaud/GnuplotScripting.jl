@@ -1,17 +1,17 @@
 ```@meta
-CurrentModule = GnuPlotScripting
+CurrentModule = GnuplotScripting
 ```
 
 # New things to learn
 
-## `GnuPlotScript()` constructor
+## `GnuplotScript()` constructor
 
-By default [`GnuPlotScript`](@ref) opens a pipe and allows plots to be
+By default [`GnuplotScript`](@ref) opens a pipe and allows plots to be
 immediately rendered in a gnuplot window.
 
 If you do not want to render plot, use
 ```julia
-gp = GnuPlotScript(direct_plot=false)
+gp = GnuplotScript(direct_plot=false)
 ```
 
 **CAVEAT:** if `direct_plot=false` you will have to [run the gnuplot
@@ -20,8 +20,8 @@ figure files.
 
 **Note:** you can work with several scripts in the same time:
 ```julia
-gp_1 = GnuPlotScript()
-gp_2 = GnuPlotScript()
+gp_1 = GnuplotScript()
+gp_2 = GnuplotScript()
 
 free_form(gp_1,"plot sin(x)")
 free_form(gp_2,"plot cos(x)")
@@ -43,7 +43,7 @@ new one you can still use `plot`, as usual.
 Example:
 
 ```julia
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 free_form(gp,"replot sin(x) t 'first plot'")
 free_form(gp,"replot sin(2*x) t 'second plot'")
@@ -64,13 +64,13 @@ You will get an identifier `id`. This identifier can be then used in
 plot functions. By example:
 
 ```julia
-using GnuPlotScripting
+using GnuplotScripting
 
 X = -2:0.1:2
 Y = -2:0.1:2
 M = [exp(-x_i*x_i-y_j*y_j) for x_i=X, y_j=Y]
 
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 id = register_data(gp, M)
 

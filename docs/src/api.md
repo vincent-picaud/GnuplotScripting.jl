@@ -8,5 +8,5 @@
 ## Documentation
 
 ```@autodocs
-Modules = [GnuPlotScripting]
+Modules = [GnuplotScripting]
 ```

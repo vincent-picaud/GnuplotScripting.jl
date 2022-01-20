@@ -1,6 +1,6 @@
-using GnuPlotScripting
+using GnuplotScripting
 using Test
 
-@testset "GnuPlotScripting.jl" begin
+@testset "GnuplotScripting.jl" begin
     # Write your tests here.
 end

@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = GnuPlotScripting
+CurrentModule = GnuplotScripting
 ```
 
 # [Beside `free_form()`](@id beside_free_form)
@@ -27,9 +27,9 @@ free_form(gp, "set title \"My_plot_title\" noenhanced")
 An easy way to plot vertical bars:
 
 ```julia
-using GnuPlotScripting
+using GnuplotScripting
 
-gp = GnuPlotScript()
+gp = GnuplotScript()
 
 add_vertical_line(gp,-5.0,name="left")
 add_vertical_line(gp,+5.0,name="right")

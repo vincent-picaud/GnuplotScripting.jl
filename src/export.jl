@@ -20,14 +20,14 @@ end
 
 """
 ```julia
-export_png(gp::GnuPlotScript,
+export_png(gp::GnuplotScript,
            filename::AbstractString;
            enhanced::Bool)
 ```
 
 Export the current plots as an `PNG` image
 """
-function export_png(gp::GnuPlotScript,filename::AbstractString;
+function export_png(gp::GnuplotScript,filename::AbstractString;
                     enhanced::Union{Nothing,Bool}=nothing)
 
     # add .png ext to filename
