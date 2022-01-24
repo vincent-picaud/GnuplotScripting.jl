@@ -85,8 +85,19 @@ mutable struct GnuplotScript
         any_plot = false
         
         gp = new(registered_data,script,any_plot,io)
+
+        # add a finalizer to close pipe
+        #
+        finalizer(gp) do gp_to_finalize
+            if gp_to_finalize._direct_plot_io != nothing
+                @async close(gp_to_finalize._direct_plot_io)
+            end
+          
+        end
     end
 end
+
+
 
 # check if data has already been registered
 #
